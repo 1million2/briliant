@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="phaser.min.js"></script>
+</head>
+<body>
+  <script>
+  var game = new Phaser.Game(800, 800, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update });
+  var sprite1;
+  var sprite2;
+  var sprite3;
+  var sprite;
+
+  function showSprite (img, variable, scale) {
+    variable = game.add.sprite(game.world.centerX, game.world.centerY, img);
+    variable.anchor.set(0.5);
+    var rotate = variable.animations.add("rotate");
+    variable.animations.play('rotate', 5, true);
+    variable.scale.x = scale;
+    variable.scale.y = scale;
+    return variable;
+  }
+
+  function preload () {
+      game.stage.backgroundColor = '#124184'; 
+      game.load.spritesheet('daimond1', 'img/1.png', 392, 370, 4);
+      game.load.spritesheet('daimond2', 'img/2.png', 449, 430, 4);
+      game.load.spritesheet('daimond3', 'img/3.png', 326, 333, 4);
+  }
+
+  function create () {
+    sprite1 = game.add.sprite(game.world.centerX, game.world.centerY, 'daimond1'); 
+    sprite1.anchor.set(0.5);
+    
+    var rotate = sprite1.animations.add("rotate");
+
+    sprite1.animations.play('rotate', 5, true);
+
+    sprite1.scale.x = 0.5
+    sprite1.scale.y = 0.5
+
+    setTimeout(() => {
+        sprite2 = showSprite("daimond2", sprite2, 0.8);
+        setTimeout(() => {
+            sprite1.visible = false
+            sprite2.visible = false;
+        }, 700);
+    }, 500);
+
+    setTimeout(() => {
+        sprite3 = showSprite("daimond3", sprite3, 1.1);
+        game.add.tween(sprite3).to({ x: 200, y: 100 }, 1500, Phaser.Easing.Linear.None, true);
+    }, 1200);
+  }
+
+  function update () {
+    if (sprite1.width < 300) {
+        sprite1.scale.x += 0.01;
+        sprite1.scale.y += 0.01;
+    }
+    if (sprite3 && sprite3.width >= 60) {
+        sprite3.scale.x -= 0.01;
+        sprite3.scale.y -= 0.01;
+    }
+    if (sprite3 && sprite3.width <= 60) {
+        sprite3.visible = false;
+        var sprite = showSprite("daimond2", sprite2, 1.1)
+        sprite.x = 200;
+        sprite.y = 100;
+        sprite.width = 60;
+        sprite.height = 60;
+    }  
+  }
+</script>
+    
+</body>
+</html> 
